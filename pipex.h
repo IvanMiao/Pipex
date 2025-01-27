@@ -6,7 +6,7 @@
 /*   By: ymiao <ymiao@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/26 18:30:10 by ymiao             #+#    #+#             */
-/*   Updated: 2025/01/27 22:27:15 by ymiao            ###   ########.fr       */
+/*   Updated: 2025/01/27 22:44:26 by ymiao            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <string.h>
 # include <fcntl.h>
 # include <stddef.h>
+# include <errno.h>
 
 # include "./ft_printf/ft_printf.h"
 # include "./GNL/get_next_line.h"

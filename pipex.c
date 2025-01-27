@@ -6,7 +6,7 @@
 /*   By: ymiao <ymiao@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/26 18:59:03 by ymiao             #+#    #+#             */
-/*   Updated: 2025/01/27 22:29:01 by ymiao            ###   ########.fr       */
+/*   Updated: 2025/01/27 22:45:18 by ymiao            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,14 +40,14 @@ void	run_pipes(int argc, char **argv, char **env)
 	fd[0] = open(argv[1], O_RDONLY);
 	if (fd[0] == -1)
 	{
-		ft_printf_fd(2, "pipex: no such file or directory: %s\n", argv[1]);
-		exit(1);
+		ft_printf_fd(2, "pipex: %s: %s\n", strerror(errno) ,argv[1]);
+		exit(EXIT_FAILURE);
 	}
 	fd[1] = open(argv[argc - 1], O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (fd[1] == -1)
 	{
-		perror("open");
-		exit(2);
+		ft_printf_fd(2, "pipex: %s: %s\n", strerror(errno) ,argv[1]);
+		exit(EXIT_FAILURE);
 	}
 	while (i < argc - 1)
 	{
