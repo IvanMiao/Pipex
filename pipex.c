@@ -5,109 +5,65 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ymiao <ymiao@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/24 17:26:09 by ymiao             #+#    #+#             */
-/*   Updated: 2025/01/21 19:54:31 by ymiao            ###   ########.fr       */
+/*   Created: 2024/12/26 18:59:03 by ymiao             #+#    #+#             */
+/*   Updated: 2025/01/27 22:29:01 by ymiao            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-static char	*get_path(char **env, char **cmd)
+void	pipes_mainloop(int *fd, t_cmd *cmd, int i, int argc)
 {
-	char	*s;
-	char	*ans;
-
-	s = all_path(env);
-	ans = sep_path(s, cmd[0]);
-	if (ans == NULL)
-	{
-		ft_printf_fd(2, "pipex: command not found: %s\n", cmd[0]);
-		free_split(cmd);
-		exit(127);
-	}
-	return (ans);
-}
-
-void	ft_exec(int fd_file, char **cmd, char **env, int in_or_out)
-{
-	char	*path;
-
-	if (in_or_out == 0)
-		dup2(fd_file, 0);
-	else if (in_or_out == 1)
-		dup2(fd_file, 1);
-	close(fd_file);
-	path = get_path(env, cmd);
-	if (execve(path, cmd, env) == -1)
-	{
-		if (path != cmd[0] && path)
-			free(path);
-		free_split(cmd);
-		perror("execve");
-	}
-	return ;
-}
-
-int	pipe_left(int *fd, char **argv, char **env)
-{
-	int		infile;
-	char	**cmd;
-
-	cmd = ft_split(argv[2], ' ');
-	close(fd[0]);
-	dup2(fd[1], 1);
-	close(fd[1]);
-	infile = open(argv[1], O_RDONLY, 0777);
-	if (infile == -1)
-	{
-		ft_printf_fd(2, "pipex: no such file or directory: %s\n", argv[1]);
-		free_split(cmd);
-		exit(1);
-	}
-	ft_exec(infile, cmd, env, 0);
-	return (1);
-}
-
-int	pipe_right(int *fd, char **argv, char **env)
-{
-	int		outfile;
-	char	**cmd;
-
-	cmd = ft_split(argv[3], ' ');
-	close(fd[1]);
-	dup2(fd[0], 0);
-	close(fd[0]);
-	outfile = open(argv[4], O_CREAT | O_WRONLY | O_TRUNC, 0777);
-	if (outfile == -1)
-	{
-		perror("open");
-		free_split(cmd);
-		exit(1);
-	}
-	ft_exec(outfile, cmd, env, 1);
-	return (1);
-}
-
-int	main(int argc, char **argv, char **envp)
-{
-	int		fd[2];
-	pid_t	pid;
-
-	if (argc != 5)
-	{
-		ft_printf_fd(2, "Usage: ./pipex file1 cmd1 cmd2 file2\n");
-		return (1);
-	}
-	pipe(fd);
-	pid = fork();
-	if (pid < 0)
-		perror("fork");
-	else if (pid == 0)
-		pipe_left(fd, argv, envp);
+	if (i == 2)
+		ft_exec(fd[0], cmd->right_pipe[1], *cmd);
+	else if (i != argc - 2)
+		ft_exec(cmd->left_pipe[0], cmd->right_pipe[1], *cmd);
+	else
+		ft_exec(cmd->left_pipe[0], fd[1], *cmd);
+	if (i != argc - 2)
+		cmd->left_pipe[0] = cmd->right_pipe[0];
 	else
 	{
-		waitpid(pid, NULL, 0);
-		pipe_right(fd, argv, envp);
+		close(cmd->right_pipe[0]);
+		close(cmd->right_pipe[1]);
 	}
-	return (1);
+	free_t_cmd(*cmd);
+}
+
+void	run_pipes(int argc, char **argv, char **env)
+{
+	t_cmd	cmd;
+	int		fd[2];
+	int		i;
+
+	i = 2;
+	fd[0] = open(argv[1], O_RDONLY);
+	if (fd[0] == -1)
+	{
+		ft_printf_fd(2, "pipex: no such file or directory: %s\n", argv[1]);
+		exit(1);
+	}
+	fd[1] = open(argv[argc - 1], O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	if (fd[1] == -1)
+	{
+		perror("open");
+		exit(2);
+	}
+	while (i < argc - 1)
+	{
+		cmd = assign_cmd(cmd, argv[i], env);
+		pipes_mainloop(fd, &cmd, i, argc);
+		i++;
+	}
+}
+
+int	main(int argc, char **argv, char **env)
+{
+	if (exam_arg(argc, argv, env) != 0)
+		return (1);
+	if (ft_strcmp(argv[1], "here_doc") == 0)
+		run_heredoc(argc, argv, env, argv[2]);
+	else
+		run_pipes(argc, argv, env);
+	return (0);
 }

@@ -6,11 +6,11 @@
 /*   By: ymiao <ymiao@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/19 21:02:03 by ymiao             #+#    #+#             */
-/*   Updated: 2025/01/21 19:11:53 by ymiao            ###   ########.fr       */
+/*   Updated: 2025/01/27 22:32:06 by ymiao            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../pipex_bonus.h"
+#include "../pipex.h"
 
 int	ft_strcmp(char *s1, char *s2)
 {
@@ -87,6 +87,6 @@ void	run_heredoc(int argc, char **argv, char **env, char *limiter)
 		cmd = assign_cmd(cmd, argv[i], env);
 		heredoc_mainloop(fd, &cmd, i, argc);
 		i++;
-	}	
+	}
 	unlink("./.heredoc.tmp");
 }

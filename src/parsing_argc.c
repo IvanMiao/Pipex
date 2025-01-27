@@ -6,11 +6,11 @@
 /*   By: ymiao <ymiao@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 14:06:01 by ymiao             #+#    #+#             */
-/*   Updated: 2025/01/21 19:15:05 by ymiao            ###   ########.fr       */
+/*   Updated: 2025/01/27 22:27:27 by ymiao            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../pipex_bonus.h"
+#include "../pipex.h"
 
 char	*get_path(char **env, char **cmd)
 {

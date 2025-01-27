@@ -6,7 +6,7 @@
 #    By: ymiao <ymiao@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/22 17:21:57 by ymiao             #+#    #+#              #
-#    Updated: 2025/01/21 19:45:13 by ymiao            ###   ########.fr        #
+#    Updated: 2025/01/27 22:29:57 by ymiao            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,18 +15,12 @@ NAME	:= pipex
 CFLAGS	:= -Wall -Werror -Wextra
 
 SRC		:= pipex.c \
-			util/free_split.c util/parsing_path.c \
-			util/ft_split.c util/ft_strjoin.c
+				src/free_split.c src/parsing_path.c \
+				src/ft_split.c src/ft_strjoin.c \
+				src/parsing_argc.c src/here_doc.c src/cmd.c \
+				GNL/get_next_line.c GNL/get_next_line_utils.c
 SRC_PLUS	:= ft_printf/libftprintf.a
 OBJS	:= $(SRC:%.c=%.o)
-
-SRC_BONUS	:= bonus/pipex_bonus.c \
-				util/free_split.c util/parsing_path.c \
-				util/ft_split.c util/ft_strjoin.c \
-				bonus/parsing/parsing_argc.c bonus/parsing/here_doc.c \
-				bonus/parsing/cmd.c bonus/GNL/get_next_line.c \
-				bonus/GNL/get_next_line_utils.c
-OBJS_BONUS	:= $(SRC_BONUS:%.c=%.o)
 
 all : $(NAME)
 
@@ -36,13 +30,6 @@ $(NAME) : $(SRC)
 
 %.o : %.c
 	cc $(CFLAGS) -c $< -o $@
-
-bonus : .bonus
-
-.bonus : $(SRC_BONUS)
-	@make all -C ft_printf
-	gcc $(CFLAGS) ${SRC_BONUS} $(SRC_PLUS) -o pipex_bonus
-	@touch .bonus
 
 test : $(NAME)
 	./pipex infile_not_exist cat wc outfile_not_exist; ls
@@ -64,11 +51,11 @@ test_val : $(NAME)
 
 
 clean :
-	rm -rf $(OBJS) ${OBJS_BONUS} .bonus
+	rm -rf $(OBJS) $(SRC_PLUS)
 
 fclean : clean
-	rm -rf $(NAME) pipex_bonus
+	rm -rf $(NAME)
 
 re : fclean all
 
-.PHONY: all clean fclean re bonus
+.PHONY: all clean fclean re
