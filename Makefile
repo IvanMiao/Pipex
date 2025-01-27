@@ -6,7 +6,7 @@
 #    By: ymiao <ymiao@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/22 17:21:57 by ymiao             #+#    #+#              #
-#    Updated: 2025/01/27 22:29:57 by ymiao            ###   ########.fr        #
+#    Updated: 2025/01/27 22:34:07 by ymiao            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,6 +17,7 @@ CFLAGS	:= -Wall -Werror -Wextra
 SRC		:= pipex.c \
 				src/free_split.c src/parsing_path.c \
 				src/ft_split.c src/ft_strjoin.c \
+				src/ft_exec.c \
 				src/parsing_argc.c src/here_doc.c src/cmd.c \
 				GNL/get_next_line.c GNL/get_next_line_utils.c
 SRC_PLUS	:= ft_printf/libftprintf.a
