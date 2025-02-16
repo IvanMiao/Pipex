@@ -6,7 +6,7 @@
 /*   By: ymiao <ymiao@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 22:30:50 by ymiao             #+#    #+#             */
-/*   Updated: 2025/01/27 22:31:58 by ymiao            ###   ########.fr       */
+/*   Updated: 2025/02/16 20:09:38 by ymiao            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ void	ft_exec(int fd_read, int fd_write, t_cmd cmd)
 	pid = fork();
 	if (pid < 0)
 		perror("fork");
-	dup2(fd_read, 0);
-	dup2(fd_write, 1);
+	dup2(fd_read, STDIN_FILENO);
+	dup2(fd_write, STDOUT_FILENO);
 	close(fd_read);
 	close(fd_write);
 	if (pid == 0)
