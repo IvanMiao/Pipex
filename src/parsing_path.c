@@ -6,7 +6,7 @@
 /*   By: ymiao <ymiao@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/24 20:45:13 by ymiao             #+#    #+#             */
-/*   Updated: 2025/01/21 16:39:47 by ymiao            ###   ########.fr       */
+/*   Updated: 2025/02/27 04:27:40 by ymiao            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ char	*all_path(char **env)
 	char	*ans;
 
 	i = 0;
+	if (!env)
+		return (NULL);
 	while (env[i])
 	{
 		if (ft_strlen(env[i]) > 5 && env[i][0] == 'P'
@@ -32,6 +34,16 @@ char	*all_path(char **env)
 	return (NULL);
 }
 
+/**
+ * Searches for a command in all PATH directories
+ *
+ * First checks if the command is already a full path. If not, searches through
+ * each directory in PATH to find the executable file.
+ *
+ * @param allpath String containing all PATH directories separated by ':'
+ * @param cmd Command name to search for
+ * @return Full path to the executable if found, NULL if not found
+ */
 char	*sep_path(char *allpath, char *cmd)
 {
 	char	**path;
@@ -42,6 +54,8 @@ char	*sep_path(char *allpath, char *cmd)
 	if (access(cmd, F_OK | X_OK) == 0)
 		return (cmd);
 	path = ft_split((const char *)allpath, ':');
+	if (!path)
+		return (NULL);
 	while (path[i])
 	{
 		ans = ft_strjoin_cmd(path[i], cmd);

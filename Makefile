@@ -6,7 +6,7 @@
 #    By: ymiao <ymiao@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/22 17:21:57 by ymiao             #+#    #+#              #
-#    Updated: 2025/02/16 20:11:37 by ymiao            ###   ########.fr        #
+#    Updated: 2025/02/27 04:04:53 by ymiao            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,9 @@ SRC		:= pipex.c \
 				src/ft_exec.c src/ft_strcmp.c \
 				src/parsing_argc.c src/here_doc.c src/cmd.c \
 				GNL/get_next_line.c GNL/get_next_line_utils.c
+
 SRC_PLUS	:= ft_printf/libftprintf.a
+
 OBJS	:= $(SRC:%.c=%.o)
 
 all : $(NAME)
@@ -34,7 +36,6 @@ $(NAME) : $(SRC)
 
 test : $(NAME)
 	./pipex infile_not_exist cat wc outfile_not_exist; ls
-	rm outfile_not_exist
 	./pipex infile cat wc outfile_not_exist; ls
 	rm outfile_not_exist
 	./pipex infile_not_exist cat wc outfile

@@ -6,12 +6,22 @@
 /*   By: ymiao <ymiao@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 14:06:01 by ymiao             #+#    #+#             */
-/*   Updated: 2025/02/16 20:13:47 by ymiao            ###   ########.fr       */
+/*   Updated: 2025/02/27 04:27:06 by ymiao            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../pipex.h"
 
+/**
+ * Retrieves the full path to a command executable
+ *
+ * Searches for the command in the system paths found in environment variables.
+ * Prints error message if command is not found.
+ *
+ * @param env Array of environment variables to search for PATH
+ * @param cmd Array containing the command and its arguments
+ * @return Full path to the executable if found, NULL if not found
+ */
 char	*get_path(char **env, char **cmd)
 {
 	char	*s;
@@ -28,6 +38,18 @@ char	*get_path(char **env, char **cmd)
 	return (ans);
 }
 
+/**
+ * Validates command line arguments and checks if commands exist
+ *
+ * 1. Ensures proper number of arguments
+ * 2. For each command, checks if it exists in system paths
+ * 3. Handles both standard mode and here_doc mode
+ *
+ * @param argc Number of command line arguments
+ * @param argv Array of argument strings
+ * @param env Environment variables array
+ * @return 0 on success, 1 on usage error, 2 on command not found
+ */
 int	exam_arg(int argc, char **argv, char **env)
 {
 	int		i;
