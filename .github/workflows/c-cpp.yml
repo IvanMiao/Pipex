@@ -13,6 +13,13 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+    - name: Setup Project
+      run : |
+        # Geneerate the configure script
+        if [ ! -f ./configure ]; then
+          echo "Generating configure script..."
+          autoreconf -i
+        fi
     - name: configure
       run: ./configure
     - name: make
